@@ -1,0 +1,36 @@
+{% if user.is_authenticated %}
+  <p>
+    Username:
+    <a href="#">
+      {{ user.username }}
+    </a>
+  </p>
+  <br>
+  <form action="{% url 'logout' %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="logout">
+  </form>
+{% endif %}
+<ul>
+  <li>
+    <a href="/">Home</a>
+  </li>
+  <li>
+    <a href="{% url 'manager:project-list' %}">Projects</a>
+  </li>
+  <li>
+    <a href="{% url 'manager:worker-list' %}">Workers</a>
+  </li>
+  <li>
+    <a href="{% url 'manager:position-list' %}">Positions</a>
+  </li>
+  <li>
+    <a href="{% url 'manager:team-list' %}">Teams</a>
+  </li>
+  <li>
+    <a href="{% url 'manager:task-type-list' %}">Task Types</a>
+  </li>
+  <li>
+    <a href="{% url 'manager:task-list' %}">Tasks</a>
+  </li>
+</ul>

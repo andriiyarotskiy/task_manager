@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}
+  Workers
+{% endblock %}
+{% block content %}
+  <h2>
+    Workers
+    <a href="{% url 'manager:worker-create' %}">+</a>
+  </h2>
+
+  {% if worker_list %}
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>USERNAME</th>
+        <th>FULL NAME</th>
+        <th>EDIT</th>
+        <th>DELETE</th>
+      </tr>
+      {% for worker in worker_list %}
+        <tr>
+          <td>
+            {{ worker.id }}
+          </td>
+          <td>
+            {{ worker.username }}
+          </td>
+          <td>
+            {{ worker.first_name }} {{ worker.last_name }}
+          </td>
+          <td>
+            <a href="{% url 'manager:worker-update' pk=worker.id %}">
+              Edit
+            </a>
+          </td>
+          <td>
+            <a href="{% url 'manager:worker-delete' pk=worker.id %}">
+              Delete
+            </a>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+
+  {% else %}
+    <p>
+      No workers created yet
+    </p>
+
+  {% endif %}
+
+{% endblock %}

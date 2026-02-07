@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block title %}
+  Tasks
+{% endblock %}
+{% block content %}
+  <h2>
+    Tasks
+    <a href="{% url 'manager:task-create' %}">+</a>
+  </h2>
+  {% if task_list %}
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>NAME</th>
+        <th>DESCRIPTION</th>
+        <th>PROJECT</th>
+        <th>TASK TYPE</th>
+        <th>DEADLINE</th>
+        <th>PRIORITY</th>
+        <th>TASK STATUS</th>
+        <th>TAGS</th>
+      </tr>
+      {% for task in task_list %}
+        <tr>
+          <td>
+            <a href="{% url 'manager:task-detail' pk=task.id %}">
+              {{ task.id }}
+            </a>
+          </td>
+          <td>{{ task.name }}</td>
+          <td>{{ task.description }}</td>
+          <td>{{ task.project }}</td>
+          <td>{{ task.task_type }}</td>
+          <td>{{ task.deadline }}</td>
+          <td>{{ task.priority }}</td>
+          <td>{{ task.completed }}</td>
+          <td>
+            {% if task.tags.all %}
+              <ul id="tag-list-{{ task.id }}">
+                {% for tag in task.tags.all %}
+                  <li>
+                    <span onclick="showEditForm({{ task.id }}, {{ tag.id }}, '{{ tag.name }}')"
+                          style="cursor: pointer;">
+                      {{ tag.name }}
+                    </span>
+
+                    <!-- Tag Edit Form (Originally Hidden) -->
+                    <form id="edit-form-{{ task.id }}-{{ tag.id }}"
+                          action="{% url 'manager:edit-tag' %}"
+                          method="POST"
+                          style="display: none;">
+                      {% csrf_token %}
+                      <input type="hidden" name="tag_id" value="{{ tag.id }}">
+                      <input type="text" name="tag_name" value="{{ tag.name }}" required>
+                      <button type="submit">Save</button>
+                      <button type="button" onclick="hideEditForm({{ task.id }}, {{ tag.id }})">Cancel</button>
+                    </form>
+
+                    <form action="{% url 'manager:delete-tag' %}" method="POST" style="display: inline;">
+                      {% csrf_token %}
+                      <input type="hidden" name="task_id" value="{{ task.id }}">
+                      <input type="hidden" name="tag_id" value="{{ tag.id }}">
+                      <button type="submit" style="font-size:18px">
+                        <i class="material-icons">delete</i>
+                      </button>
+                    </form>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+
+            <!-- Button "add tag" -->
+            <span id="add-tag-btn-{{ task.id }}"
+                  onclick="showAddForm({{ task.id }})"
+                  style="cursor: pointer; color: blue;">
+              add tag
+            </span>
+
+            <!-- Form of adding a tag (initially hidden) -->
+            <form id="add-form-{{ task.id }}"
+                  action="{% url 'manager:add-tag' %}"
+                  method="POST"
+                  style="display: none;">
+              {% csrf_token %}
+              <input type="hidden" name="task_id" value="{{ task.id }}">
+              <input type="text" name="tag_name" placeholder="Введіть тег" required>
+              <button type="submit">Додати</button>
+              <button type="button" onclick="hideAddForm({{ task.id }})">Скасувати</button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    <p>No tasks created yet</p>
+  {% endif %}
+
+  <script>
+    function showAddForm(taskId) {
+      document.getElementById('add-tag-btn-' + taskId).style.display = 'none';
+      document.getElementById('add-form-' + taskId).style.display = 'block';
+    }
+
+    function hideAddForm(taskId) {
+      document.getElementById('add-form-' + taskId).style.display = 'none';
+      document.getElementById('add-tag-btn-' + taskId).style.display = 'inline';
+    }
+
+    function showEditForm(taskId, tagId) {
+      // Hide Tag Text
+      event.target.style.display = 'none';
+      // Show Edit Form
+      document.getElementById('edit-form-' + taskId + '-' + tagId).style.display = 'block';
+    }
+
+    function hideEditForm(taskId, tagId) {
+      // Hide Form
+      document.getElementById('edit-form-' + taskId + '-' + tagId).style.display = 'none';
+      // Show tag name back
+      document.getElementById('edit-form-' + taskId + '-' + tagId).previousElementSibling.style.display = 'inline';
+    }
+  </script>
+{% endblock %}

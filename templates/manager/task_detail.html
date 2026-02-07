@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}
+  Task {{ task.id }}
+{% endblock %}
+
+{% block content %}
+  <h2>
+    {{ task.name }}
+    <a href="{% url 'manager:task-update' pk=task.id %}">Edit</a>
+    <a href="{% url 'manager:task-delete' pk=task.id %}">Delete</a>
+  </h2>
+  <p>Description: {{ task.description }}</p>
+  <p>Priority: {{ task.priority }}</p>
+  <p>Deadline: {% if task.deadline %} {{ task.deadline }} {% else %} No deadline {% endif %}
+
+    {% if task.assignees.all %}
+      <h4>
+        This task is assigned to the following employees:
+      </h4>
+
+      <ul>
+        {% for employee in task.assignees.all %}
+          <li>
+            {{ employee }}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  <h4>
+    Task Tags:
+  </h4>
+  {% if task.tags.all %}
+    <ul>
+      {% for tag in task.tags.all %}
+        <li>
+          {{ tag }}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    You can create your own tags and attach them to this task if you want
+  {% endif %}
+
+
+{% endblock %}

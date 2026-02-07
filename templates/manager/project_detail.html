@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}
+  Project page
+{% endblock %}
+
+{% block content %}
+  <h2>{{ project.name }}</h2>
+
+  <p><strong>Status:</strong> {% if project.completed %}Completed{% else %}In Progress{% endif %}</p>
+
+  <h3>Project Teams:</h3>
+  {% if project.teams.all %}
+    <ul>
+      {% for team in project.teams.all %}
+        <li>
+          {{ team.name }}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No teams assigned to this project yet.</p>
+  {% endif %}
+
+  <h3>All Tasks:</h3>
+  {% if not project.tasks.all %}
+    <p>No tasks in this project yet.</p>
+  {% else %}
+    <h3>Complete Tasks:</h3>
+    {% if completed_tasks %}
+      <ul>
+        {% for task in completed_tasks %}
+          <li>
+            <a href="{% url 'manager:task-detail' pk=task.id %}">{{ task.name }}</a>
+            - {{ task.priority }}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    <h3>Incomplete tasks:</h3>
+    {% if incomplete_tasks %}
+      <ul>
+        {% for task in incomplete_tasks %}
+          <li>
+            <a href="{% url 'manager:task-detail' pk=task.id %}">{{ task.name }}</a>
+            - {{ task.priority }}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endif %}
+{% endblock %}

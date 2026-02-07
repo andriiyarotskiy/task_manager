@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.urls import reverse
 
 from manager_service import settings
 
@@ -43,13 +44,14 @@ class Worker(AbstractUser):
         verbose_name = "Worker"
 
     def __str__(self):
-        return f"${self.username} - {self.first_name} {self.last_name}"
+        return f"{self.username} {self.position or ''}"
 
 
 class Team(models.Model):
     name = models.CharField(max_length=100)
-    members = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="teams"
+    members = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name="teams"
     )
 
     def __str__(self):
@@ -59,13 +61,14 @@ class Team(models.Model):
 class Project(models.Model):
     name = models.CharField(max_length=100, unique=True)
     completed = models.BooleanField(default=False)
-    teams = models.ForeignKey(
+    teams = models.ManyToManyField(
         Team,
-        on_delete=models.CASCADE,
         related_name="projects",
         blank=True,
-        null=True
     )
+
+    def get_absolute_url(self):
+        return reverse("manager:project-detail", kwargs={"pk": self.pk})
 
     def __str__(self):
         return self.name
@@ -86,7 +89,9 @@ class Task(models.Model):
     deadline = models.DateTimeField(null=True, blank=True)
     completed = models.BooleanField(default=False)
     priority = models.TextField(
-        choices=TASK_PRIORITIES, default=TASK_PRIORITIES[0], blank=True, null=True
+        choices=TASK_PRIORITIES,
+        default=TASK_PRIORITIES[0],
+        blank=True, null=True
     )
 
     task_type = models.ForeignKey(
@@ -104,6 +109,9 @@ class Task(models.Model):
         on_delete=models.CASCADE,
         related_name="tasks",
     )
+
+    def get_absolute_url(self):
+        return reverse("manager:task-detail", kwargs={"pk": self.pk})
 
     def __str__(self):
         return f"{self.name} ({self.priority})"

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Home
+{% endblock %}
+{% block content %}
+  <h3>
+    Welcome, {{ user.first_name }} {{ user.last_name }} {{ user.username }}
+  </h3>
+  Here you may create your project with tasks
+  <h3>
+    My Teams:
+  </h3>
+  <ul>
+    {% for team in my_teams %}
+      <li>
+        {{ team }}
+      </li>
+    {% endfor %}
+  </ul>
+  {% if incomplete_tasks %}
+    <h3>
+      My Incompleted Tasks:
+    </h3>
+    <ul>
+      {% for task in incomplete_tasks %}
+        <li>
+          <a href="{% url 'manager:task-update' pk=task.id %}">{{ task }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+{% endblock %}

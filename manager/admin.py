@@ -31,7 +31,8 @@ class TaskAdmin(admin.ModelAdmin):
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ["name", "teams", "completed"]
+    list_display = ["name", "completed"]
+    filter_horizontal = ["teams"]
 
 
 @admin.register(Worker)

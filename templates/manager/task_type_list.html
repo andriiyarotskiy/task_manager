@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}
+  Task Types
+{% endblock %}
+{% block content %}
+  <h2>
+    Task Types
+    <a href="{% url 'manager:task-type-create' %}">+</a>
+  </h2>
+
+  {% if task_type_list %}
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>NAME</th>
+        <th>EDIT</th>
+        <th>DELETE</th>
+      </tr>
+      {% for task_type in task_type_list %}
+        <tr>
+          <td>
+            {{ task_type.id }}
+          </td>
+          <td>
+            {{ task_type.name }}
+          </td>
+          <td>
+            <a href="{% url 'manager:task-type-update' pk=task_type.id %}">
+              Edit
+            </a>
+          </td>
+          <td>
+            <a href="{% url 'manager:task-type-delete' pk=task_type.id %}">
+              Delete
+            </a>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+
+  {% else %}
+    <p>
+      No task type created yet
+    </p>
+  {% endif %}
+
+{% endblock %}
