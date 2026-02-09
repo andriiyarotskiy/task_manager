@@ -4,31 +4,68 @@
   Home
 {% endblock %}
 {% block content %}
-  <h3>
-    Welcome, {{ user.first_name }} {{ user.last_name }} {{ user.username }}
-  </h3>
-  Here you may create your project with tasks
-  <h3>
-    My Teams:
-  </h3>
-  <ul>
-    {% for team in my_teams %}
-      <li>
-        {{ team }}
-      </li>
-    {% endfor %}
-  </ul>
-  {% if incomplete_tasks %}
-    <h3>
-      My Incompleted Tasks:
-    </h3>
-    <ul>
-      {% for task in incomplete_tasks %}
-        <li>
-          <a href="{% url 'manager:task-update' pk=task.id %}">{{ task }}</a>
-        </li>
-      {% endfor %}
-    </ul>
-  {% endif %}
+  <div class="card border-0 shadow-sm mb-4 card-page-header">
+    <div class="card-body">
+      <h2 class="h4 mb-1">
+        Welcome,
+        {% if user.first_name or user.last_name %}
+          {{ user.first_name }} {{ user.last_name }}
+        {% else %}
+          {{ user.username }}
+        {% endif %}
+      </h2>
+      <p class="text-muted mb-0">
+        Here you can organize projects, tasks, teams and workers in one place.
+      </p>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-12 col-lg-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+          <h3 class="h6 mb-0">My Teams</h3>
+        </div>
+        <div class="card-body">
+          {% if my_teams %}
+            <ul class="list-group list-group-flush">
+              {% for team in my_teams %}
+                <li class="list-group-item px-0">
+                  {{ team }}
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="text-muted mb-0">You are not assigned to any teams yet.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+          <h3 class="h6 mb-0">My Incomplete Tasks</h3>
+        </div>
+        <div class="card-body">
+          {% if incomplete_tasks %}
+            <ul class="list-group list-group-flush">
+              {% for task in incomplete_tasks %}
+                <li class="list-group-item px-0 d-flex justify-content-between align-items-center">
+                  <a href="{% url 'manager:task-update' pk=task.id %}" class="text-decoration-none">
+                    {{ task }}
+                  </a>
+                  <span class="badge bg-secondary">{{ task.priority }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="text-muted mb-0">You have no incomplete tasks. Nice work!</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
 
 {% endblock %}
+

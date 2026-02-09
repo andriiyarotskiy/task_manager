@@ -3,46 +3,49 @@
   Positions
 {% endblock %}
 {% block content %}
-  <h2>
-    Positions
-    <a href="{% url 'manager:position-create' %}">+</a>
-  </h2>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="h4 mb-0">Positions</h2>
+    <a href="{% url 'manager:position-create' %}" class="btn btn-primary btn-sm">
+      <span class="material-icons align-middle me-1" style="font-size:18px;">badge</span>
+      New Position
+    </a>
+  </div>
 
   {% if position_list %}
-    <table>
-      <tr>
-        <th>ID</th>
-        <th>NAME</th>
-        <th>EDIT</th>
-        <th>DELETE</th>
-      </tr>
-      {% for position in position_list %}
-        <tr>
-          <td>
-            {{ position.id }}
-          </td>
-          <td>
-            {{ position.name }}
-          </td>
-          <td>
-            <a href="{% url 'manager:position-update' pk=position.id %}">
-              Edit
-            </a>
-          </td>
-          <td>
-            <a href="{% url 'manager:position-delete' pk=position.id %}">
-              Delete
-            </a>
-          </td>
-        </tr>
-      {% endfor %}
-    </table>
-
+    <div class="card shadow-sm">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col" class="text-end">Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for position in position_list %}
+            <tr>
+              <td>{{ position.id }}</td>
+              <td>{{ position.name }}</td>
+              <td class="text-end">
+                <a href="{% url 'manager:position-update' pk=position.id %}"
+                   class="btn btn-outline-secondary btn-sm me-1">
+                  Edit
+                </a>
+                <a href="{% url 'manager:position-delete' pk=position.id %}"
+                   class="btn btn-outline-danger btn-sm">
+                  Delete
+                </a>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
   {% else %}
-    <p>
-      No positions found.
-    </p>
-
+    <p class="text-muted">No positions found.</p>
   {% endif %}
 
 {% endblock %}
+

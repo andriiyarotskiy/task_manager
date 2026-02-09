@@ -3,58 +3,59 @@
   Teams
 {% endblock %}
 {% block content %}
-  <h2>
-    Teams
-    <a href="{% url 'manager:team-create' %}">+</a>
-  </h2>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="h4 mb-0">Teams</h2>
+    <a href="{% url 'manager:team-create' %}" class="btn btn-primary btn-sm">
+      <span class="material-icons align-middle me-1" style="font-size:18px;">group_add</span>
+      New Team
+    </a>
+  </div>
   {% if team_list %}
-    <table>
-      <tr>
-        <th>ID</th>
-        <th>NAME</th>
-        <th>MEMBERS</th>
-        <th>EDIT</th>
-        <th>DELETE</th>
-      </tr>
-      {% for team in team_list %}
-        <tr>
-          <td>
-            {{ team.id }}
-          </td>
-          <td>
-            {{ team.name }}
-          </td>
-          <td>
-
-            {% if team.members.all %}
-              <ul>
-                {% for member in team.members.all %}
-                  <li>
-                    {{ member }}
-                  </li>
-                {% endfor %}
-              </ul>
-            {% endif %}
-
-          </td>
-          <td>
-            <a href="{% url 'manager:team-update' pk=team.id %}">
-              Edit
-            </a>
-          </td>
-          <td>
-            <a href="{% url 'manager:team-delete' pk=team.id %}">
-              Delete
-            </a>
-          </td>
-        </tr>
-      {% endfor %}
-    </table>
-
+    <div class="card shadow-sm">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Members</th>
+            <th scope="col" class="text-end">Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for team in team_list %}
+            <tr>
+              <td>{{ team.id }}</td>
+              <td>{{ team.name }}</td>
+              <td>
+                {% if team.members.all %}
+                  <ul class="list-unstyled mb-0 small text-muted">
+                    {% for member in team.members.all %}
+                      <li>{{ member }}</li>
+                    {% endfor %}
+                  </ul>
+                {% else %}
+                  <span class="text-muted small">No members</span>
+                {% endif %}
+              </td>
+              <td class="text-end">
+                <a href="{% url 'manager:team-update' pk=team.id %}"
+                   class="btn btn-outline-secondary btn-sm me-1">
+                  Edit
+                </a>
+                <a href="{% url 'manager:team-delete' pk=team.id %}"
+                   class="btn btn-outline-danger btn-sm">
+                  Delete
+                </a>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
   {% else %}
-    <p>
-      No teams created yet
-    </p>
-
+    <p class="text-muted">No teams created yet.</p>
   {% endif %}
 {% endblock %}
+

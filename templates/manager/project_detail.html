@@ -4,48 +4,107 @@
 {% endblock %}
 
 {% block content %}
-  <h2>{{ project.name }}</h2>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="h4 mb-0">{{ project.name }}</h2>
+    <div class="btn-group btn-group-sm" role="group">
+      <a href="{% url 'manager:project-update' pk=project.id %}" class="btn btn-outline-secondary">Edit</a>
+      <a href="{% url 'manager:project-delete' pk=project.id %}" class="btn btn-outline-danger">Delete</a>
+    </div>
+  </div>
 
-  <p><strong>Status:</strong> {% if project.completed %}Completed{% else %}In Progress{% endif %}</p>
+  <div class="row g-4">
+    <div class="col-12 col-lg-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h3 class="h6 text-uppercase text-muted mb-3">Overview</h3>
+          <p class="mb-2">
+            <span class="text-muted">Status:</span>
+            {% if project.completed %}
+              <span class="badge bg-success ms-1">Completed</span>
+            {% else %}
+              <span class="badge bg-warning text-dark ms-1">In progress</span>
+            {% endif %}
+          </p>
+        </div>
+      </div>
+    </div>
 
-  <h3>Project Teams:</h3>
-  {% if project.teams.all %}
-    <ul>
-      {% for team in project.teams.all %}
-        <li>
-          {{ team.name }}
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>No teams assigned to this project yet.</p>
-  {% endif %}
+    <div class="col-12 col-lg-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h3 class="h6 text-uppercase text-muted mb-3">Project Teams</h3>
+          {% if project.teams.all %}
+            <ul class="list-group list-group-flush">
+              {% for team in project.teams.all %}
+                <li class="list-group-item px-0">
+                  {{ team.name }}
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="text-muted mb-0">No teams assigned to this project yet.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
 
-  <h3>All Tasks:</h3>
-  {% if not project.tasks.all %}
-    <p>No tasks in this project yet.</p>
-  {% else %}
-    <h3>Complete Tasks:</h3>
-    {% if completed_tasks %}
-      <ul>
-        {% for task in completed_tasks %}
-          <li>
-            <a href="{% url 'manager:task-detail' pk=task.id %}">{{ task.name }}</a>
-            - {{ task.priority }}
-          </li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-    <h3>Incomplete tasks:</h3>
-    {% if incomplete_tasks %}
-      <ul>
-        {% for task in incomplete_tasks %}
-          <li>
-            <a href="{% url 'manager:task-detail' pk=task.id %}">{{ task.name }}</a>
-            - {{ task.priority }}
-          </li>
-        {% endfor %}
-      </ul>
-    {% endif %}
+    <div class="col-12 col-lg-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h3 class="h6 text-uppercase text-muted mb-3">Tasks Summary</h3>
+          {% if not project.tasks.all %}
+            <p class="text-muted mb-0">No tasks in this project yet.</p>
+          {% else %}
+            {% if completed_tasks %}
+              <p class="mb-1">
+                <span class="badge bg-success me-2">Completed</span>
+                {{ completed_tasks|length }} task{{ completed_tasks|length|pluralize }}
+              </p>
+            {% endif %}
+            {% if incomplete_tasks %}
+              <p class="mb-0">
+                <span class="badge bg-warning text-dark me-2">In progress</span>
+                {{ incomplete_tasks|length }} task{{ incomplete_tasks|length|pluralize }}
+              </p>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% if project.tasks.all %}
+    <div class="mt-4">
+      <h3 class="h5 mb-3">All Tasks</h3>
+
+      {% if completed_tasks %}
+        <h4 class="h6 text-muted">Completed</h4>
+        <ul class="list-group list-group-flush mb-3">
+          {% for task in completed_tasks %}
+            <li class="list-group-item px-0 d-flex justify-content-between align-items-center">
+              <a href="{% url 'manager:task-detail' pk=task.id %}" class="text-decoration-none">
+                {{ task.name }}
+              </a>
+              <span class="badge badge-priority-{{ task.priority|lower }}">{{ task.priority }}</span>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      {% if incomplete_tasks %}
+        <h4 class="h6 text-muted">Incomplete</h4>
+        <ul class="list-group list-group-flush">
+          {% for task in incomplete_tasks %}
+            <li class="list-group-item px-0 d-flex justify-content-between align-items-center">
+              <a href="{% url 'manager:task-detail' pk=task.id %}" class="text-decoration-none">
+                {{ task.name }}
+              </a>
+              <span class="badge badge-priority-{{ task.priority|lower }}">{{ task.priority }}</span>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
   {% endif %}
 {% endblock %}
+

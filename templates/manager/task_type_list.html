@@ -3,45 +3,49 @@
   Task Types
 {% endblock %}
 {% block content %}
-  <h2>
-    Task Types
-    <a href="{% url 'manager:task-type-create' %}">+</a>
-  </h2>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="h4 mb-0">Task Types</h2>
+    <a href="{% url 'manager:task-type-create' %}" class="btn btn-primary btn-sm">
+      <span class="material-icons align-middle me-1" style="font-size:18px;">category</span>
+      New Task Type
+    </a>
+  </div>
 
   {% if task_type_list %}
-    <table>
-      <tr>
-        <th>ID</th>
-        <th>NAME</th>
-        <th>EDIT</th>
-        <th>DELETE</th>
-      </tr>
-      {% for task_type in task_type_list %}
-        <tr>
-          <td>
-            {{ task_type.id }}
-          </td>
-          <td>
-            {{ task_type.name }}
-          </td>
-          <td>
-            <a href="{% url 'manager:task-type-update' pk=task_type.id %}">
-              Edit
-            </a>
-          </td>
-          <td>
-            <a href="{% url 'manager:task-type-delete' pk=task_type.id %}">
-              Delete
-            </a>
-          </td>
-        </tr>
-      {% endfor %}
-    </table>
-
+    <div class="card shadow-sm">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col" class="text-end">Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for task_type in task_type_list %}
+            <tr>
+              <td>{{ task_type.id }}</td>
+              <td>{{ task_type.name }}</td>
+              <td class="text-end">
+                <a href="{% url 'manager:task-type-update' pk=task_type.id %}"
+                   class="btn btn-outline-secondary btn-sm me-1">
+                  Edit
+                </a>
+                <a href="{% url 'manager:task-type-delete' pk=task_type.id %}"
+                   class="btn btn-outline-danger btn-sm">
+                  Delete
+                </a>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
   {% else %}
-    <p>
-      No task type created yet
-    </p>
+    <p class="text-muted">No task type created yet.</p>
   {% endif %}
 
 {% endblock %}
+

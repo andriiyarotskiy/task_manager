@@ -1,10 +1,29 @@
 {% extends "base.html" %}
 {% block content %}
-  <form method="post">
-    {% csrf_token %}
-    <p>Are you sure you want to delete "{{ object }}"?</p>
-    {{ form }}
-    <input type="submit" value="Yes, delete">
-    <a type="button" href="{{ view.get_success_url }}">Cancel</a>
-  </form>
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-6 col-xl-5">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h3 class="h5 mb-3">Confirm deletion</h3>
+          <form method="post">
+            {% csrf_token %}
+            <div class="alert alert-warning" role="alert">
+              Are you sure you want to delete
+              <strong>"{{ object }}"</strong>?
+            </div>
+            {{ form }}
+            <div class="form-actions">
+              <a href="{{ view.get_success_url }}" class="btn btn-outline-secondary">
+                Cancel
+              </a>
+              <button type="submit" class="btn btn-danger">
+                Yes, delete
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
+

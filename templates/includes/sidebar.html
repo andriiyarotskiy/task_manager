@@ -1,37 +1,35 @@
 {% if user.is_authenticated %}
-  <p>
-    Username:
-    <a href="#">
-      {{ user.username }}
-    </a>
-  </p>
-  <br>
-  <form action="{% url 'logout' %}" method="post">
-    {% csrf_token %}
-    <input type="submit" value="logout">
-  </form>
-
-  <ul>
-    <li>
-      <a href="/">Home</a>
-    </li>
-    <li>
-      <a href="{% url 'manager:project-list' %}">Projects</a>
-    </li>
-    <li>
-      <a href="{% url 'manager:worker-list' %}">Workers</a>
-    </li>
-    <li>
-      <a href="{% url 'manager:position-list' %}">Positions</a>
-    </li>
-    <li>
-      <a href="{% url 'manager:team-list' %}">Teams</a>
-    </li>
-    <li>
-      <a href="{% url 'manager:task-type-list' %}">Task Types</a>
-    </li>
-    <li>
-      <a href="{% url 'manager:task-list' %}">Tasks</a>
-    </li>
-  </ul>
+  <div class="sidebar h-100 d-flex flex-column">
+    <nav class="nav flex-column nav-pills sidebar-nav px-2 py-3">
+      <a class="nav-link d-flex align-items-center" href="/">
+        <span class="material-icons me-2">home</span>
+        <span>Home</span>
+      </a>
+      <a class="nav-link d-flex align-items-center" href="{% url 'manager:project-list' %}">
+        <span class="material-icons me-2">folder</span>
+        <span>Projects</span>
+      </a>
+      <a class="nav-link d-flex align-items-center" href="{% url 'manager:task-list' %}">
+        <span class="material-icons me-2">checklist</span>
+        <span>Tasks</span>
+      </a>
+      <a class="nav-link d-flex align-items-center" href="{% url 'manager:task-type-list' %}">
+        <span class="material-icons me-2">category</span>
+        <span>Task Types</span>
+      </a>
+      <a class="nav-link d-flex align-items-center" href="{% url 'manager:team-list' %}">
+        <span class="material-icons me-2">groups</span>
+        <span>Teams</span>
+      </a>
+      <a class="nav-link d-flex align-items-center" href="{% url 'manager:worker-list' %}">
+        <span class="material-icons me-2">person</span>
+        <span>Workers</span>
+      </a>
+      <a class="nav-link d-flex align-items-center" href="{% url 'manager:position-list' %}">
+        <span class="material-icons me-2">badge</span>
+        <span>Positions</span>
+      </a>
+    </nav>
+  </div>
 {% endif %}
+
