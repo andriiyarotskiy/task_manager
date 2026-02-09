@@ -1,35 +1,39 @@
 {% if user.is_authenticated %}
-  <div class="sidebar h-100 d-flex flex-column">
-    <nav class="nav flex-column nav-pills sidebar-nav px-2 py-3">
-      <a class="nav-link d-flex align-items-center" href="/">
-        <span class="material-icons me-2">home</span>
-        <span>Home</span>
-      </a>
-      <a class="nav-link d-flex align-items-center" href="{% url 'manager:project-list' %}">
-        <span class="material-icons me-2">folder</span>
-        <span>Projects</span>
-      </a>
-      <a class="nav-link d-flex align-items-center" href="{% url 'manager:task-list' %}">
-        <span class="material-icons me-2">checklist</span>
-        <span>Tasks</span>
-      </a>
-      <a class="nav-link d-flex align-items-center" href="{% url 'manager:task-type-list' %}">
-        <span class="material-icons me-2">category</span>
-        <span>Task Types</span>
-      </a>
-      <a class="nav-link d-flex align-items-center" href="{% url 'manager:team-list' %}">
-        <span class="material-icons me-2">groups</span>
-        <span>Teams</span>
-      </a>
-      <a class="nav-link d-flex align-items-center" href="{% url 'manager:worker-list' %}">
-        <span class="material-icons me-2">person</span>
-        <span>Workers</span>
-      </a>
-      <a class="nav-link d-flex align-items-center" href="{% url 'manager:position-list' %}">
-        <span class="material-icons me-2">badge</span>
-        <span>Positions</span>
-      </a>
-    </nav>
-  </div>
+  <aside class="col-12 col-md-3 col-lg-2 bg-light border-end px-0 sidebar-wrapper">
+
+    <div class="sidebar h-100 d-flex flex-column">
+      <nav class="nav flex-column nav-pills sidebar-nav px-2 py-3">
+        <a class="nav-link d-flex align-items-center" href="/">
+          <span class="material-icons me-2">home</span>
+          <span>Home</span>
+        </a>
+        <a class="nav-link d-flex align-items-center" href="{% url 'manager:project-list' %}">
+          <span class="material-icons me-2">folder</span>
+          <span>Projects</span>
+        </a>
+        <a class="nav-link d-flex align-items-center" href="{% url 'manager:task-list' %}">
+          <span class="material-icons me-2">checklist</span>
+          <span>Tasks</span>
+        </a>
+        <a class="nav-link d-flex align-items-center" href="{% url 'manager:task-type-list' %}">
+          <span class="material-icons me-2">category</span>
+          <span>Task Types</span>
+        </a>
+        <a class="nav-link d-flex align-items-center" href="{% url 'manager:team-list' %}">
+          <span class="material-icons me-2">groups</span>
+          <span>Teams</span>
+        </a>
+        <a class="nav-link d-flex align-items-center" href="{% url 'manager:worker-list' %}">
+          <span class="material-icons me-2">person</span>
+          <span>Workers</span>
+        </a>
+        <a class="nav-link d-flex align-items-center" href="{% url 'manager:position-list' %}">
+          <span class="material-icons me-2">badge</span>
+          <span>Positions</span>
+        </a>
+      </nav>
+    </div>
+  </aside>
+
 {% endif %}
 

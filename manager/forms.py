@@ -2,14 +2,17 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 
-from manager.models import Worker, Team, Task, Tag
+from manager.models import Worker, Team, Task
 
 
 class WorkerCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = Worker
         fields = UserCreationForm.Meta.fields + (
-            "username", "first_name", "last_name", "position",
+            "username",
+            "first_name",
+            "last_name",
+            "position",
         )
 
 
@@ -29,9 +32,7 @@ class TaskForm(forms.ModelForm):
     assignees = forms.ModelMultipleChoiceField(
         required=False,
         queryset=get_user_model().objects.select_related("position"),
-        widget=forms.CheckboxSelectMultiple(
-
-        ),
+        widget=forms.CheckboxSelectMultiple(),
     )
 
     class Meta:
@@ -44,15 +45,13 @@ class TaskForm(forms.ModelForm):
             "deadline",
             "priority",
             "description",
-            "assignees"
+            "assignees",
         )
         widgets = {
-            'description': forms.Textarea(attrs={
-                'rows': 3,
-                'placeholder': 'Enter task description...'
-            }),
-            'deadline': forms.DateTimeInput(attrs={
-                'type': 'datetime-local',
-                'class': 'form-control'
-            }),
+            "description": forms.Textarea(
+                attrs={"rows": 3, "placeholder": "Enter task description..."}
+            ),
+            "deadline": forms.DateTimeInput(
+                attrs={"type": "datetime-local", "class": "form-control"}
+            ),
         }

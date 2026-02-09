@@ -19,7 +19,9 @@ def index(request):
     else:
         context["my_teams"] = Team.objects.filter(members=request.user)
 
-    context["incomplete_tasks"] = Task.objects.filter(Q(assignees=request.user) & Q(completed=False))
+    context["incomplete_tasks"] = Task.objects.filter(
+        Q(assignees=request.user) & Q(completed=False)
+    )
 
     return render(request, "manager/index.html", context=context)
 
@@ -35,20 +37,20 @@ class ProjectDetailView(LoginRequiredMixin, generic.DetailView):
         return Project.objects.prefetch_related(
             "teams",
             Prefetch(
-                'tasks',
+                "tasks",
                 queryset=Task.objects.filter(completed=True),
-                to_attr='completed_tasks'
+                to_attr="completed_tasks",
             ),
             Prefetch(
-                'tasks',
+                "tasks",
                 queryset=Task.objects.filter(completed=False),
-                to_attr='incomplete_tasks',
+                to_attr="incomplete_tasks",
             ),
         )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print(self.object)
+        self.object.update_completion_status()
         context["completed_tasks"] = self.object.completed_tasks
         context["incomplete_tasks"] = self.object.incomplete_tasks
         return context
@@ -61,7 +63,10 @@ class ProjectCreateView(
 ):
     model = Project
     success_url = reverse_lazy("manager:project-list")
-    fields = ("name", "teams",)
+    fields = (
+        "name",
+        "teams",
+    )
     form_title = "Project"
 
 
@@ -72,7 +77,10 @@ class ProjectUpdateView(
 ):
     model = Project
     success_url = reverse_lazy("manager:project-list")
-    fields = ("name", "teams",)
+    fields = (
+        "name",
+        "teams",
+    )
     form_title = "Project"
 
 
@@ -84,18 +92,25 @@ class ProjectDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 # Position
 
+
 class PositionListView(LoginRequiredMixin, generic.ListView):
     model = Position
 
 
-class PositionCreateView(LoginRequiredMixin, CommonFormMixin, generic.CreateView):
+class PositionCreateView(
+    LoginRequiredMixin,
+    CommonFormMixin,
+    generic.CreateView):
     model = Position
     form_title = "Position"
     success_url = reverse_lazy("manager:position-list")
     fields = "__all__"
 
 
-class PositionUpdateView(LoginRequiredMixin, CommonFormMixin, generic.UpdateView):
+class PositionUpdateView(
+    LoginRequiredMixin,
+    CommonFormMixin,
+    generic.UpdateView):
     model = Position
     form_title = "Position"
     fields = "__all__"
@@ -117,14 +132,20 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
         return queryset
 
 
-class WorkerCreateView(LoginRequiredMixin, CommonFormMixin, generic.CreateView):
+class WorkerCreateView(
+    LoginRequiredMixin,
+    CommonFormMixin,
+    generic.CreateView):
     model = get_user_model()
     form_title = "Worker Profile"
     success_url = reverse_lazy("manager:worker-list")
     form_class = WorkerCreationForm
 
 
-class WorkerUpdateView(LoginRequiredMixin, CommonFormMixin, generic.UpdateView):
+class WorkerUpdateView(
+    LoginRequiredMixin,
+    CommonFormMixin,
+    generic.UpdateView):
     model = get_user_model()
     form_title = "Worker Profile"
     form_class = WorkerCreationForm
@@ -142,10 +163,12 @@ class TeamListView(LoginRequiredMixin, generic.ListView):
     model = Team
 
     def get_queryset(self):
-        return Team.objects.prefetch_related(Prefetch(
-            "members",
-            queryset=get_user_model().objects.select_related("position"),
-        ))
+        return Team.objects.prefetch_related(
+            Prefetch(
+                "members",
+                queryset=get_user_model().objects.select_related("position"),
+            )
+        )
 
 
 class TeamCreateView(LoginRequiredMixin, CommonFormMixin, generic.CreateView):
@@ -175,14 +198,20 @@ class TaskTypeListView(LoginRequiredMixin, generic.ListView):
     context_object_name = "task_type_list"
 
 
-class TaskTypeCreateView(LoginRequiredMixin, CommonFormMixin, generic.CreateView):
+class TaskTypeCreateView(
+    LoginRequiredMixin,
+    CommonFormMixin,
+    generic.CreateView):
     model = TaskType
     fields = "__all__"
     form_title = "Task Type"
     success_url = reverse_lazy("manager:task-type-list")
 
 
-class TaskTypeUpdateView(LoginRequiredMixin, CommonFormMixin, generic.UpdateView):
+class TaskTypeUpdateView(
+    LoginRequiredMixin,
+    CommonFormMixin,
+    generic.UpdateView):
     model = TaskType
     fields = "__all__"
     form_title = "Task Type"
@@ -200,9 +229,8 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
     model = Task
 
     def get_queryset(self):
-        queryset = (Task.objects
-                    .select_related("project", "task_type")
-                    .prefetch_related("tags"))
+        queryset = Task.objects.select_related(
+            "project", "task_type").prefetch_related("tags")
         if self.request.user.is_superuser:
             return queryset
         return queryset.filter(

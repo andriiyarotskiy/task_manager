@@ -20,12 +20,7 @@ class TaskType(models.Model):
 
 
 class Tag(models.Model):
-    name = models.CharField(
-        max_length=100,
-        unique=True,
-        blank=True,
-        null=True
-    )
+    name = models.CharField(max_length=100, unique=True, blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -51,8 +46,7 @@ class Team(models.Model):
     name = models.CharField(max_length=100)
     members = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
-        related_name="teams"
-    )
+        related_name="teams")
 
     def __str__(self):
         return self.name
@@ -66,6 +60,12 @@ class Project(models.Model):
         related_name="projects",
         blank=True,
     )
+
+    def update_completion_status(self):
+        """Оновлює статус проекту на основі завдань"""
+        incomplete_count = self.tasks.filter(completed=False).count()
+        self.completed = incomplete_count == 0
+        self.save()
 
     def get_absolute_url(self):
         return reverse("manager:project-detail", kwargs={"pk": self.pk})
@@ -91,16 +91,14 @@ class Task(models.Model):
     priority = models.TextField(
         choices=TASK_PRIORITIES,
         default=TASK_PRIORITIES[0],
-        blank=True, null=True
-    )
+        blank=True,
+        null=True)
 
     task_type = models.ForeignKey(
         TaskType, on_delete=models.CASCADE, related_name="tasks"
     )
     assignees = models.ManyToManyField(
-        settings.AUTH_USER_MODEL,
-        blank=True,
-        related_name="tasks"
+        settings.AUTH_USER_MODEL, blank=True, related_name="tasks"
     )
     tags = models.ManyToManyField(Tag, related_name="tasks", blank=True)
 

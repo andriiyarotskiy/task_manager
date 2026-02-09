@@ -66,6 +66,10 @@ body {
   background-color: #198754;
 }
 
+.badge-priority-urgent {
+  background-color: #871955;
+}
+
 .tag-badge {
   background-color: #e0f0ff;
   color: #0d6efd;
