@@ -36,7 +36,7 @@ class Worker(AbstractUser):
     )
 
     class Meta:
-        verbose_name = "Worker"
+        verbose_name = "Member"
 
     def __str__(self):
         return f"{self.username} {self.position or ''}"

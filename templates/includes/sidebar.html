@@ -3,31 +3,45 @@
 
     <div class="sidebar h-100 d-flex flex-column">
       <nav class="nav flex-column nav-pills sidebar-nav px-2 py-3">
-        <a class="nav-link d-flex align-items-center" href="/">
+        {% url 'manager:index' as home %}
+        <a href="{{ home }}"
+           class="nav-link d-flex align-items-center{% if request.path == home %} active {% endif %}">
           <span class="material-icons me-2">home</span>
           <span>Home</span>
         </a>
-        <a class="nav-link d-flex align-items-center" href="{% url 'manager:project-list' %}">
+        {% url 'manager:project-list' as projects %}
+        <a href="{{ projects }}"
+           class="nav-link d-flex align-items-center{% if request.path == projects %} active {% endif %}">
           <span class="material-icons me-2">folder</span>
           <span>Projects</span>
         </a>
-        <a class="nav-link d-flex align-items-center" href="{% url 'manager:task-list' %}">
+        {% url 'manager:task-list' as tasks %}
+        <a href="{{ tasks }}"
+           class="nav-link d-flex align-items-center{% if request.path == tasks %} active{% endif %}">
           <span class="material-icons me-2">checklist</span>
           <span>Tasks</span>
         </a>
-        <a class="nav-link d-flex align-items-center" href="{% url 'manager:task-type-list' %}">
+        {% url 'manager:task-type-list' as task_types %}
+        <a href="{{ task_types }}"
+           class="nav-link d-flex align-items-center{% if request.path == task_types %} active{% endif %}">
           <span class="material-icons me-2">category</span>
           <span>Task Types</span>
         </a>
-        <a class="nav-link d-flex align-items-center" href="{% url 'manager:team-list' %}">
+        {% url 'manager:team-list' as teams %}
+        <a href="{{ teams }}"
+           class="nav-link d-flex align-items-center{% if request.path == teams %} active{% endif %}">
           <span class="material-icons me-2">groups</span>
           <span>Teams</span>
         </a>
-        <a class="nav-link d-flex align-items-center" href="{% url 'manager:worker-list' %}">
+        {% url 'manager:worker-list' as workers %}
+        <a href="{{ workers }}"
+           class="nav-link d-flex align-items-center{% if request.path == workers %} active{% endif %}">
           <span class="material-icons me-2">person</span>
-          <span>Workers</span>
+          <span>Members</span>
         </a>
-        <a class="nav-link d-flex align-items-center" href="{% url 'manager:position-list' %}">
+        {% url 'manager:position-list' as positions %}
+        <a href="{{ positions }}"
+           class="nav-link d-flex align-items-center{% if request.path == positions %} active{% endif %}">
           <span class="material-icons me-2">badge</span>
           <span>Positions</span>
         </a>
