@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% block title %}
+  Tasks
+{% endblock %}
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="h4 mb-0">Tasks</h2>
+    <a href="{% url 'manager:task-create' %}" class="btn btn-primary btn-sm">
+      <span class="material-icons align-middle me-1" style="font-size:18px;">add_task</span>
+      New Task
+    </a>
+  </div>
+  {% if task_list %}
+    <div class="card shadow-sm">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Project</th>
+            <th scope="col">Task type</th>
+            <th scope="col">Deadline</th>
+            <th scope="col">Priority</th>
+            <th scope="col">Status</th>
+            <th scope="col">Tags</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for task in task_list %}
+            <tr>
+              <td>
+                <a href="{% url 'manager:task-detail' pk=task.id %}">
+                  {{ task.id }}
+                </a>
+              </td>
+              <td>{{ task.name }}</td>
+              <td class="text-muted small">{{ task.description }}</td>
+              <td>{{ task.project }}</td>
+              <td>{{ task.task_type }}</td>
+              <td>{{ task.deadline }}</td>
+              <td>
+                <span class="badge badge-priority-{{ task.priority|lower }}">
+                  {{ task.priority }}
+                </span>
+              </td>
+              <td>
+                {% if task.completed %}
+                  <span class="badge bg-success">Completed</span>
+                {% else %}
+                  <span class="badge bg-warning text-dark">In progress</span>
+                {% endif %}
+              </td>
+              <td>
+                {% if task.tags.all %}
+                  <div id="tag-list-{{ task.id }}" class="mb-2">
+                    {% for tag in task.tags.all %}
+                      <span class="tag-badge">
+                        <span onclick="showEditForm({{ task.id }}, {{ tag.id }}, '{{ tag.name }}')">
+                          {{ tag.name }}
+                        </span>
+                        <form action="{% url 'manager:delete-tag' %}" method="POST" class="d-inline ms-1">
+                          {% csrf_token %}
+                          <input type="hidden" name="task_id" value="{{ task.id }}">
+                          <input type="hidden" name="tag_id" value="{{ tag.id }}">
+                          <button type="submit" class="btn btn-link btn-sm p-0 text-danger">
+                            <span class="material-icons" style="font-size:16px; vertical-align: middle;">close</span>
+                          </button>
+                        </form>
+                      </span>
+
+                      <form id="edit-form-{{ task.id }}-{{ tag.id }}"
+                            action="{% url 'manager:edit-tag' %}"
+                            method="POST"
+                            class="row g-2 align-items-center mt-1"
+                            style="display: none;">
+                        {% csrf_token %}
+                        <input type="hidden" name="tag_id" value="{{ tag.id }}">
+                        <div class="col-auto">
+                          <input type="text" name="tag_name" value="{{ tag.name }}" required
+                                 class="form-control form-control-sm">
+                        </div>
+                        <div class="col-auto">
+                          <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                          <button type="button"
+                                  class="btn btn-outline-secondary btn-sm"
+                                  onclick="hideEditForm({{ task.id }}, {{ tag.id }})">
+                            Cancel
+                          </button>
+                        </div>
+                      </form>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+
+                <span id="add-tag-btn-{{ task.id }}"
+                      onclick="showAddForm({{ task.id }})"
+                      class="text-primary small"
+                      style="cursor: pointer;">
+                  + add tag
+                </span>
+
+                <form id="add-form-{{ task.id }}"
+                      action="{% url 'manager:add-tag' %}"
+                      method="POST"
+                      class="row g-2 align-items-center mt-1"
+                      style="display: none;">
+                  {% csrf_token %}
+                  <input type="hidden" name="task_id" value="{{ task.id }}">
+                  <div class="col-auto">
+                    <input type="text" name="tag_name" placeholder="Enter tag" required
+                           class="form-control form-control-sm">
+                  </div>
+                  <div class="col-auto">
+                    <button type="submit" class="btn btn-primary btn-sm">Add</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm"
+                            onclick="hideAddForm({{ task.id }})">
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% else %}
+    <p class="text-muted">No tasks created yet.</p>
+  {% endif %}
+
+  <script>
+    function showAddForm(taskId) {
+      document.getElementById('add-tag-btn-' + taskId).style.display = 'none';
+      document.getElementById('add-form-' + taskId).style.display = 'flex';
+    }
+
+    function hideAddForm(taskId) {
+      document.getElementById('add-form-' + taskId).style.display = 'none';
+      document.getElementById('add-tag-btn-' + taskId).style.display = 'inline';
+    }
+
+    function showEditForm(taskId, tagId) {
+      var editForm = document.getElementById('edit-form-' + taskId + '-' + tagId);
+      if (editForm) {
+        editForm.style.display = 'flex';
+      }
+    }
+
+    function hideEditForm(taskId, tagId) {
+      var editForm = document.getElementById('edit-form-' + taskId + '-' + tagId);
+      if (editForm) {
+        editForm.style.display = 'none';
+      }
+    }
+  </script>
+{% endblock %}
+

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}
+  Members
+{% endblock %}
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="h4 mb-0">Members</h2>
+    <a href="{% url 'manager:worker-create' %}" class="btn btn-primary btn-sm">
+      <span class="material-icons align-middle me-1" style="font-size:18px;">person_add</span>
+      New Member
+    </a>
+  </div>
+
+  {% if worker_list %}
+    <div class="card shadow-sm">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Username</th>
+            <th scope="col">Full name</th>
+            <th scope="col" class="text-end">Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for worker in worker_list %}
+            <tr>
+              <td>{{ worker.id }}</td>
+              <td>{{ worker.username }}</td>
+              <td>{{ worker.first_name }} {{ worker.last_name }}</td>
+              <td class="text-end">
+                <a href="{% url 'manager:worker-update' pk=worker.id %}"
+                   class="btn btn-outline-secondary btn-sm me-1">
+                  Edit
+                </a>
+                <a href="{% url 'manager:worker-delete' pk=worker.id %}"
+                   class="btn btn-outline-danger btn-sm">
+                  Delete
+                </a>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% else %}
+    <p class="text-muted">No members created yet.</p>
+  {% endif %}
+
+{% endblock %}
+

@@ -1,0 +1,53 @@
+{% if user.is_authenticated %}
+  <aside class="col-12 col-md-3 col-lg-2 bg-light border-end px-0 sidebar-wrapper">
+
+    <div class="sidebar h-100 d-flex flex-column">
+      <nav class="nav flex-column nav-pills sidebar-nav px-2 py-3">
+        {% url 'manager:index' as home %}
+        <a href="{{ home }}"
+           class="nav-link d-flex align-items-center{% if request.path == home %} active {% endif %}">
+          <span class="material-icons me-2">home</span>
+          <span>Home</span>
+        </a>
+        {% url 'manager:project-list' as projects %}
+        <a href="{{ projects }}"
+           class="nav-link d-flex align-items-center{% if request.path == projects %} active {% endif %}">
+          <span class="material-icons me-2">folder</span>
+          <span>Projects</span>
+        </a>
+        {% url 'manager:task-list' as tasks %}
+        <a href="{{ tasks }}"
+           class="nav-link d-flex align-items-center{% if request.path == tasks %} active{% endif %}">
+          <span class="material-icons me-2">checklist</span>
+          <span>Tasks</span>
+        </a>
+        {% url 'manager:task-type-list' as task_types %}
+        <a href="{{ task_types }}"
+           class="nav-link d-flex align-items-center{% if request.path == task_types %} active{% endif %}">
+          <span class="material-icons me-2">category</span>
+          <span>Task Types</span>
+        </a>
+        {% url 'manager:team-list' as teams %}
+        <a href="{{ teams }}"
+           class="nav-link d-flex align-items-center{% if request.path == teams %} active{% endif %}">
+          <span class="material-icons me-2">groups</span>
+          <span>Teams</span>
+        </a>
+        {% url 'manager:worker-list' as workers %}
+        <a href="{{ workers }}"
+           class="nav-link d-flex align-items-center{% if request.path == workers %} active{% endif %}">
+          <span class="material-icons me-2">person</span>
+          <span>Members</span>
+        </a>
+        {% url 'manager:position-list' as positions %}
+        <a href="{{ positions }}"
+           class="nav-link d-flex align-items-center{% if request.path == positions %} active{% endif %}">
+          <span class="material-icons me-2">badge</span>
+          <span>Positions</span>
+        </a>
+      </nav>
+    </div>
+  </aside>
+
+{% endif %}
+

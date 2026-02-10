@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}
+  Task {{ task.id }}
+{% endblock %}
+
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="h4 mb-0">{{ task.name }}</h2>
+    <div class="btn-group btn-group-sm" role="group">
+      <a href="{% url 'manager:task-update' pk=task.id %}" class="btn btn-outline-secondary">Edit</a>
+      <a href="{% url 'manager:task-delete' pk=task.id %}" class="btn btn-outline-danger">Delete</a>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-12 col-lg-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h3 class="h6 text-uppercase text-muted mb-3">Details</h3>
+          <p class="mb-2">
+            <span class="text-muted">Description:</span>
+            <br>
+            <span>{{ task.description|default:"No description" }}</span>
+          </p>
+          <p class="mb-2">
+            <span class="text-muted">Priority:</span>
+            <span class="badge badge-priority-{{ task.priority|lower }} ms-1">
+              {{ task.priority }}
+            </span>
+          </p>
+          <p class="mb-0">
+            <span class="text-muted">Deadline:</span>
+            {% if task.deadline %}
+              <span class="ms-1">{{ task.deadline }}</span>
+            {% else %}
+              <span class="ms-1 text-muted">No deadline</span>
+            {% endif %}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h3 class="h6 text-uppercase text-muted mb-3">Assignees</h3>
+          {% if task.assignees.all %}
+            <ul class="list-group list-group-flush">
+              {% for employee in task.assignees.all %}
+                <li class="list-group-item px-0">
+                  {{ employee }}
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="text-muted mb-0">This task has no assignees yet.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm mt-4">
+    <div class="card-body">
+      <h3 class="h6 text-uppercase text-muted mb-3">Task Tags</h3>
+      {% if task.tags.all %}
+        <div>
+          {% for tag in task.tags.all %}
+            <span class="tag-badge">
+              {{ tag }}
+            </span>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="text-muted mb-0">
+          You can create your own tags and attach them to this task if you want.
+        </p>
+      {% endif %}
+    </div>
+  </div>
+
+{% endblock %}
+

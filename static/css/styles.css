@@ -1,0 +1,105 @@
+body {
+  background-color: #f5f7fb;
+}
+
+.app-layout {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+@media (min-width: 768px) {
+  .app-layout {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+.sidebar-wrapper {
+  min-height: 100%;
+}
+
+.sidebar {
+  background: #f8f9fa;
+}
+
+.sidebar-nav .nav-link {
+  border-radius: 0.5rem;
+  margin: 2px 0;
+  color: #495057;
+  font-size: 0.95rem;
+  padding-top: 0.55rem;
+  padding-bottom: 0.55rem;
+}
+
+.sidebar-nav .nav-link .material-icons {
+  font-size: 20px;
+}
+
+.sidebar-nav .nav-link:hover {
+  background-color: #e9ecef;
+  color: #212529;
+}
+
+.sidebar-nav .nav-link.active {
+  background-color: #0d6efd;
+  color: #fff;
+}
+
+.main-content {
+  background-color: #f5f7fb;
+}
+
+.table thead th {
+  white-space: nowrap;
+}
+
+.badge-priority-high {
+  background-color: #dc3545;
+}
+
+.badge-priority-medium {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.badge-priority-low {
+  background-color: #198754;
+}
+
+.badge-priority-urgent {
+  background-color: #871955;
+}
+
+.tag-badge {
+  background-color: #e0f0ff;
+  color: #0d6efd;
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+  font-size: 0.75rem;
+  margin: 0 0.15rem 0.15rem 0;
+  display: inline-flex;
+  align-items: center;
+}
+
+.tag-badge .material-icons {
+  font-size: 16px;
+  margin-left: 2px;
+}
+
+.card-page-header {
+  border: none;
+  background: transparent;
+}
+
+.card-page-header .card-body {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
