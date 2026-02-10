@@ -100,7 +100,8 @@ class PositionListView(LoginRequiredMixin, generic.ListView):
 class PositionCreateView(
     LoginRequiredMixin,
     CommonFormMixin,
-    generic.CreateView):
+    generic.CreateView
+):
     model = Position
     form_title = "Position"
     success_url = reverse_lazy("manager:position-list")
@@ -110,7 +111,8 @@ class PositionCreateView(
 class PositionUpdateView(
     LoginRequiredMixin,
     CommonFormMixin,
-    generic.UpdateView):
+    generic.UpdateView
+):
     model = Position
     form_title = "Position"
     fields = "__all__"
@@ -135,7 +137,8 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
 class WorkerCreateView(
     LoginRequiredMixin,
     CommonFormMixin,
-    generic.CreateView):
+    generic.CreateView
+):
     model = get_user_model()
     form_title = "Worker Profile"
     success_url = reverse_lazy("manager:worker-list")
@@ -145,7 +148,8 @@ class WorkerCreateView(
 class WorkerUpdateView(
     LoginRequiredMixin,
     CommonFormMixin,
-    generic.UpdateView):
+    generic.UpdateView
+):
     model = get_user_model()
     form_title = "Worker Profile"
     form_class = WorkerCreationForm
@@ -201,7 +205,8 @@ class TaskTypeListView(LoginRequiredMixin, generic.ListView):
 class TaskTypeCreateView(
     LoginRequiredMixin,
     CommonFormMixin,
-    generic.CreateView):
+    generic.CreateView
+):
     model = TaskType
     fields = "__all__"
     form_title = "Task Type"
@@ -211,7 +216,8 @@ class TaskTypeCreateView(
 class TaskTypeUpdateView(
     LoginRequiredMixin,
     CommonFormMixin,
-    generic.UpdateView):
+    generic.UpdateView
+):
     model = TaskType
     fields = "__all__"
     form_title = "Task Type"
