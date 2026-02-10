@@ -1,5 +1,4 @@
-from dotenv import load_dotenv
-from .base import *
+from manager_service.settings.base import *
 import os
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False

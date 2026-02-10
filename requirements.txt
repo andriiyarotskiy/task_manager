@@ -18,3 +18,4 @@ python-dotenv==1.2.1
 pytokens==0.4.1
 ruff==0.15.0
 sqlparse==0.5.5
+whitenoise==6.11.0
